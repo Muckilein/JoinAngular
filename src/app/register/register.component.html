@@ -1,0 +1,24 @@
+<form (ngSubmit)="registerUser()" action="/registerAPI/"> 
+  
+    <input type="submit" value = "Register">   
+    <div>
+        username<br>
+        <input name="username" [(ngModel)]="username" type="text">
+    </div>
+    <div>
+        password<br>
+        <input name="password" [(ngModel)]="password" type="password"></div>
+    <div>
+        repeat password<br>
+        <input name="password2" [(ngModel)]="password2" type="password">         
+    </div>
+    <div>
+        email<br>
+        <input name="email" [(ngModel)]="email" type="email"><br>
+        first_name<br>
+        <input name="first_name" [(ngModel)]="first_name" type="text"><br>
+        last_name<br>
+        <input name="last_name" [(ngModel)]="last_name" type="text">
+    </div>
+    <div style="margin-top: 25px;"><button>register</button></div> 
+</form>
