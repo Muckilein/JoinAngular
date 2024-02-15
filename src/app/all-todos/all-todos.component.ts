@@ -16,7 +16,6 @@ export class AllTodosComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-
   async ngOnInit() {
     try {
       this.todos = await this.loadTodos();

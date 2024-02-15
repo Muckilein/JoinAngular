@@ -8,13 +8,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AllTodosComponent } from './all-todos/all-todos.component';
 import { RegisterComponent } from './register/register.component';
+import { CreateTodoComponent } from './create-todo/create-todo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AllTodosComponent,
-    RegisterComponent
+    RegisterComponent,
+    CreateTodoComponent
   ],
   imports: [
     BrowserModule,

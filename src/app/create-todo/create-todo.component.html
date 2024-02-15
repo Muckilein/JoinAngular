@@ -1,0 +1,28 @@
+<form (ngSubmit)="createTodo()" >   
+  
+    <div>
+        title<br>
+        <input name="title" [(ngModel)]="title" type="text">
+    </div>
+    <div>
+        description<br>
+        <input name="description" [(ngModel)]="description" type="text"></div>
+    <div>
+        date<br>
+        <input name="date" [(ngModel)]="date" type="date">         
+    </div>
+    <div>
+        category<br>
+        <input name="category" [(ngModel)]="category" type="text"><br>
+        color<br>
+        <input name="color" [(ngModel)]="color" type="text"><br>
+        checked
+        <input name="checked" [(ngModel)]="checked" type="checkbox"><br>
+        prio<br>
+        <input name="prio" [(ngModel)]="prio" type="text"><br>
+        state<br>
+        <input name="state" [(ngModel)]="state" type="text"><br>
+    </div>
+    <button type="submit">erstellen</button>
+   
+</form>
