@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+    font-family: 'montserrat', 'Raleway', sans-serif;
+}
+
+@font-face {
+
+    font-family: 'montserrat';
+    /* src: url('../fonts/zabars.ttf') format('woff2'); */
+    src: url('../src/fonts/Montserrat-VariableFont_wght.ttf') format('woff2');
+
+}

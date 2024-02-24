@@ -1,30 +1,44 @@
 <h1>{{error}}</h1>
-<div *ngIf = "!showDetail">
-<div *ngFor="let todo of todos; let ind = index"><input [checked]="todo.checked" type="checkbox">{{ todo.title }}<button (click)="openDetails(todo, ind)">details</button></div>
-</div>
-<div *ngIf = "showDetail">
-<button (click)="back()">back</button>
-<button (click)="save()">save</button> 
-<br>  
-<input [(ngModel)]="detailedTask.title" type = "text"><br>
-<input [(ngModel)]="detailedTask.description" type = "text"><br>
-<input [(ngModel)]="detailedTask.date" type = "date"><br>
-<input [(ngModel)]="detailedTask.prio" type = "text"><br>
-<input [(ngModel)]="detailedTask.state" type = "text"><br>
-    <div *ngFor="let subs of detailedTask.subtask">
-        {{subs.title}}    
+<div *ngIf="!showDetail">
+    <div class="todoOverview" *ngFor="let todo of todos; let ind = index">
+        <!-- <input [checked]="todo.checked"   type="checkbox"> -->
+        {{ todo.title }}<br><button class="button" (click)="openDetails(todo, ind)">details</button>
     </div>
-    <input [(ngModel)]="subtask" type = "text" ><br><button (click)= "addSubtask()">add Subtask</button>
+</div>
+<div *ngIf="showDetail">
+    <button (click)="back()">back</button>
+    <button *ngIf="!newTodo" (click)="save()">save</button>
+    <button *ngIf="newTodo" (click)="makeTodo()">save as new Todo</button>
+    <br>
+    <input [(ngModel)]="detailedTask.title" type="text"><br>
+    <input [(ngModel)]="detailedTask.description" type="text"><br>
+    <input [(ngModel)]="detailedTask.date" type="date"><br>
+    category<br>
+    <input [(ngModel)]="detailedTask.category" type="text"><br>
+    prio<br>
+    <input [(ngModel)]="detailedTask.prio" type="text"><br>
+    state<br>
+    <input [(ngModel)]="detailedTask.state" type="text"><br>
+    <br>
+    Subtasks:
+    <br>
+    <div *ngFor="let subs of detailedTask.subtask">
+      <input type="checkbox" [(ngModel)]="subs['checked']">  
+      {{subs.title}}
+    </div>    
+    <input [(ngModel)]="subtask" type="text"><br><button (click)="addSubtask()">add Subtask</button>
     <br><br>
     <div *ngFor="let assign of detailedTask.assignments">
         {{assign.name}}
     </div>
     <br>
-    <button (click)= "addAssigments()">add Assignments</button>
-    <div *ngIf = openContactList>
-        <div *ngFor=" let c of contacts" >
-        {{c.name}} <button (click)="addC(c)">add</button>
+    <button class="button" (click)="addAssigments()">add Assignments</button>
+    <div *ngIf=openContactList>
+        <div *ngFor=" let c of contacts">
+            {{c.name}} <button (click)="addC(c)">add</button>
         </div>
     </div>
 </div>
-<br><button (click)="logout()">Logout</button>
+<br><button class="button"  *ngIf="!showDetail" (click)="makeEmptyTodo()">New Todo</button>
+<br><button class="button" (click)="logout()">Logout</button>
+<br><button class="button" (click)="register()">Register</button>
