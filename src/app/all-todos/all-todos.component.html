@@ -9,12 +9,18 @@
     <button (click)="back()">back</button>
     <button *ngIf="!newTodo" (click)="save()">save</button>
     <button *ngIf="newTodo" (click)="makeTodo()">save as new Todo</button>
+    <button (click)="deleteTodo()">delete</button>
     <br>
     <input [(ngModel)]="detailedTask.title" type="text"><br>
     <input [(ngModel)]="detailedTask.description" type="text"><br>
     <input [(ngModel)]="detailedTask.date" type="date"><br>
     category<br>
-    <input [(ngModel)]="detailedTask.category" type="text"><br>
+    <div > {{detailedTask.category.title}}</div>
+    <button (click)="openEditCategory()">edit Category</button>
+    <ul *ngIf="editCategory">
+        <li *ngFor = "let c of category; let i = index" style="cursor:pointer" (click)="chooseCategory(i)">{{c.title}}</li>
+    </ul>
+   <br>
     prio<br>
     <input [(ngModel)]="detailedTask.prio" type="text"><br>
     state<br>

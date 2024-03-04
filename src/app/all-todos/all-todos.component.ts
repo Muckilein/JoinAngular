@@ -17,10 +17,12 @@ export class AllTodosComponent implements OnInit {
   taskIndex = 0;
   showDetail = false;
   newTodo=false;
+  editCategory=false;
   subtask = "";
   error = '';
   colors=['#d8ebf8','#9deb58','#cf3886','#b131e1','#7537d1','#3e76dd','#38dbd5']
   openContactList: boolean = false;
+  category:any =[];
   constructor(private http: HttpClient, private router: Router) { }
 
 
@@ -28,15 +30,27 @@ export class AllTodosComponent implements OnInit {
     try {
       this.todos = await this.loadTodos();
       this.contacts = await this.loadContacts();
+      this.category = await this.loadCategory();
       console.log(this.todos);
       console.log(this.contacts);
+      console.log(this.category);
     } catch (e) {
       this.error = 'Fehler beim Laden!';
     }
   }
 
+  async loadCategory(){
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      'Authorization', 'Token ' + localStorage.getItem('token')
+    );
+   
+     let url = environment.baseUrl + "/categoryAPI/";
+     return lastValueFrom(this.http.get(url, { headers: headers }));    
+    
+     }
 
-  loadTodos() {
+  async loadTodos() {
     let headers = new HttpHeaders();
     headers = headers.set(
       'Authorization', 'Token ' + localStorage.getItem('token')
@@ -75,7 +89,45 @@ export class AllTodosComponent implements OnInit {
     this.detailedTask = task;
     this.taskIndex = index;
     this.showDetail = true;
+    
   }
+
+  async deleteTodo(){
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",'Token ' + localStorage.getItem('token'))   
+    const requestOptions: RequestInit = {
+      method: 'DELETE',
+      headers: myHeaders,      
+      redirect: 'follow'
+    };
+    try {
+      await fetch(environment.baseUrl + "/createTodoAPI/"+this.detailedTask.id+"/", requestOptions);
+      this.deleteTodoFromList(this.detailedTask.id);
+      this.back();    
+       
+      // TODO: Redirect
+     // this.router.navigateByUrl('/todos');
+    } catch (e) {
+      // Show error message
+      console.error(e);
+
+    }
+  }
+
+  deleteTodoFromList(id:number){
+    let list:any=[];
+    this.todos.forEach((t:any)=>{
+      if (t.id != id)
+      {
+        list.push(t);
+      }
+    })
+   
+    this.todos = list;
+    console.log(this.todos);    
+  }
+
   back() {
     this.showDetail = false;
     this.newTodo = false;
@@ -105,7 +157,7 @@ export class AllTodosComponent implements OnInit {
     this.detailedTask.title = "";
     this.detailedTask.description = "";
     this.detailedTask.date = "";
-    this.detailedTask.category = "";
+    this.detailedTask.category = {"id":0,"category":""};
     this.detailedTask.color = this.colors[Math.floor(Math.random()*7)];
     this.detailedTask.checked = "";
     this.detailedTask.prio = "";
@@ -119,6 +171,7 @@ export class AllTodosComponent implements OnInit {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",'Token ' + localStorage.getItem('token'))
+    console.log("deatiled task category ", this.detailedTask.category);
     const raw = this.setTask();
     const requestOptions: RequestInit = {
       method: 'POST',
@@ -129,7 +182,9 @@ export class AllTodosComponent implements OnInit {
     try {
       let resp = await fetch(environment.baseUrl + "/createTodoAPI/", requestOptions);
       let json = await resp.json();
+      this.detailedTask = json;     
       this.todos.push(json);
+      this.back();
       // TODO: Redirect
      // this.router.navigateByUrl('/todos');
     } catch (e) {
@@ -149,8 +204,8 @@ export class AllTodosComponent implements OnInit {
   }
 
   async save() {
-    this.todos[this.taskIndex] = this.detailedTask;
-    console.log(this.detailedTask);
+    this.todos[this.taskIndex] = this.detailedTask;   
+    console.log("task",this.detailedTask);   
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",'Token ' + localStorage.getItem('token'))
@@ -188,7 +243,7 @@ export class AllTodosComponent implements OnInit {
     }
   }
   addAssigments() {
-    this.openContactList = true;
+    this.openContactList = !this.openContactList;
   }
   addC(c: any) {
     this.openContactList = false;
@@ -201,6 +256,15 @@ export class AllTodosComponent implements OnInit {
       }
     })
     if (!exist) { this.detailedTask.assignments.push(ass); }
+  }
+
+  chooseCategory(index :number){
+    this.detailedTask.category =  this.category[index];
+    console.log(this.detailedTask);
+  }
+
+  openEditCategory(){
+    this.editCategory=!this.editCategory
   }
 
 }
